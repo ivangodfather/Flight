@@ -38,7 +38,7 @@ final class FlightTests: XCTestCase {
         XCTAssertEqual(result, [connections.last!])
     }
 
-    func testAtoDRouteIsNilWhenNoValidConnections() throws {
+    func testAtoDRouteIsEmptyWhenNoValidConnections() throws {
         let connections: [Connection] = [
             .init(from: "A", to: "B", price: 1, coordinates: .mock),
             .init(from: "B", to: "C", price: 1, coordinates: .mock),

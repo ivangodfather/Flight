@@ -22,7 +22,6 @@ struct FlightClient: FlightClientProtocol {
         using connections: [Connection]
     ) -> [Connection] {
         var cheapestRoute: [Connection] = []
-        var cheapestPrice: Double = Double.infinity
 
         findRoutes(
             from: from,
@@ -30,7 +29,6 @@ struct FlightClient: FlightClientProtocol {
             currentRoute: [],
             currentPrice: 0.0,
             cheapestRoute: &cheapestRoute,
-            cheapestPrice: &cheapestPrice,
             connections: connections
         )
 
@@ -43,13 +41,11 @@ struct FlightClient: FlightClientProtocol {
         currentRoute: [Connection],
         currentPrice: Double,
         cheapestRoute: inout [Connection],
-        cheapestPrice: inout Double,
         connections: [Connection]
     ) {
         if from == to {
-            if currentPrice < cheapestPrice {
+            if (currentRoute.price < cheapestRoute.price) || cheapestRoute.isEmpty {
                 cheapestRoute = currentRoute
-                cheapestPrice = currentPrice
             }
             return
         }
@@ -64,7 +60,6 @@ struct FlightClient: FlightClientProtocol {
                     currentRoute: newRoute,
                     currentPrice: currentPrice + connection.price,
                     cheapestRoute: &cheapestRoute,
-                    cheapestPrice: &cheapestPrice,
                     connections: connections
                 )
             }
