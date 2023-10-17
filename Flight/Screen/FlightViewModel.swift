@@ -6,31 +6,23 @@
 //
 
 import Combine
+import Foundation
 import Observation
 
-@Observable
-final class FlightViewModel {
-    var from = "" {
-        didSet {
-            fromPublisher.send(from)
-        }
-    }
-    var fromCompletions = Set<String>()
+final class FlightViewModel: ObservableObject {
+    @Published var from = ""
+    @Published var fromCompletions = Set<String>()
 
-    var to = "" {
-        didSet {
-            toPublisher.send(to)
-        }
-    }
-    var toCompletions = Set<String>()
+    @Published var to = ""
+    @Published var toCompletions = Set<String>()
 
-    var isLoading = true
-    var route = [Connection]()
+    @Published var isLoading = true
+    @Published var route = [Connection]()
 
 
     private let apiClient: APIClientProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var connections = [Connection]()
+    @Published private var connections = [Connection]()
     private let flightClient: FlightClientProtocol
     private let fromPublisher = PassthroughSubject<String, Never>()
     private let toPublisher = PassthroughSubject<String, Never>()
@@ -43,47 +35,47 @@ final class FlightViewModel {
         self.apiClient = apiClient
         self.flightClient = flightClient
 
-        fromPublisher
-        .map { [weak self] from in
-            self?.connections.filter { $0.from.localizedCaseInsensitiveContains(from) } ?? []
+        $from.combineLatest($connections)
+        .map { from, connections in
+            connections
+                .filter { $0.from.localizedStandardContains(from) }
+                .map(\.from)
         }
-        .map { connections in
-            connections.map(\.from)
-        }
-        .sink { [weak self] fromCompletions in
-            if fromCompletions.contains(self?.from ?? "") {
-                self?.fromCompletions = []
-            } else {
-                self?.fromCompletions = Set(fromCompletions)
+        .map(Set.init)
+        .sink { [weak self] completions in
+            guard let self = self else {
+                return
             }
+            self.fromCompletions = completions.contains(self.from) ? [] : completions
+
         }
         .store(in: &cancellables)
 
-        toPublisher
-        .map { [weak self] to in
-            self?.connections.filter { $0.to.localizedCaseInsensitiveContains(to) } ?? []
+        $to.combineLatest($connections)
+        .map { to, connections in
+            connections
+                .filter { $0.to.localizedStandardContains(to) }
+                .map(\.to)
         }
-        .map { connections in
-            connections.map(\.to)
-        }
-        .sink { [weak self] toCompletions in
-            if toCompletions.contains(self?.to ?? "") {
-                self?.toCompletions = []
-            } else {
-                self?.toCompletions = Set(toCompletions)
+        .map(Set.init)
+        .sink { [weak self] completions in
+            guard let self = self else {
+                return
             }
+            self.toCompletions = completions.contains(self.to) ? [] : completions
         }
         .store(in: &cancellables)
     }
 
     func onAppear() {
-        apiClient.connections().sink { [weak self] _ in
-            self?.isLoading = false
-        } receiveValue: { [weak self] connections in
-            self?.connections = connections
-        }
-        .store(in: &cancellables)
-
+        apiClient.connections()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.isLoading = false
+            } receiveValue: { [weak self] connections in
+                self?.connections = connections
+            }
+            .store(in: &cancellables)
     }
 
     func search() {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FlightView: View {
-    @State private var viewModel = FlightViewModel()
+    @StateObject private var viewModel = FlightViewModel()
 
     var body: some View {
         if viewModel.isLoading {
