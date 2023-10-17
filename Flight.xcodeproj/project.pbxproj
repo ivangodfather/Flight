@@ -24,8 +24,6 @@
 		2C9CFFCE2ADE8F5F000C18CF /* FlightSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CFFCD2ADE8F5F000C18CF /* FlightSelection.swift */; };
 		2C9CFFD02ADE918B000C18CF /* RouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CFFCF2ADE918B000C18CF /* RouteView.swift */; };
 		2C9CFFD22ADE9D1D000C18CF /* FlightViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CFFD12ADE9D1D000C18CF /* FlightViewModelTests.swift */; };
-		2C9CFFD52ADEA62B000C18CF /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CFFD42ADEA62B000C18CF /* MockAPIClient.swift */; };
-		2C9CFFD72ADEA654000C18CF /* MockFlightClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9CFFD62ADEA654000C18CF /* MockFlightClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,8 +56,6 @@
 		2C9CFFCD2ADE8F5F000C18CF /* FlightSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightSelection.swift; sourceTree = "<group>"; };
 		2C9CFFCF2ADE918B000C18CF /* RouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteView.swift; sourceTree = "<group>"; };
 		2C9CFFD12ADE9D1D000C18CF /* FlightViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightViewModelTests.swift; sourceTree = "<group>"; };
-		2C9CFFD42ADEA62B000C18CF /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
-		2C9CFFD62ADEA654000C18CF /* MockFlightClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFlightClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,7 +120,6 @@
 		2C21DD032ADDD0AE005AA519 /* FlightTests */ = {
 			isa = PBXGroup;
 			children = (
-				2C9CFFD32ADEA622000C18CF /* Mocks */,
 				2C21DD042ADDD0AE005AA519 /* FlightServiceTests.swift */,
 				2C9CFFD12ADE9D1D000C18CF /* FlightViewModelTests.swift */,
 			);
@@ -176,15 +171,6 @@
 				2C9CFFCF2ADE918B000C18CF /* RouteView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		2C9CFFD32ADEA622000C18CF /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				2C9CFFD42ADEA62B000C18CF /* MockAPIClient.swift */,
-				2C9CFFD62ADEA654000C18CF /* MockFlightClient.swift */,
-			);
-			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,10 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C9CFFD72ADEA654000C18CF /* MockFlightClient.swift in Sources */,
 				2C9CFFD22ADE9D1D000C18CF /* FlightViewModelTests.swift in Sources */,
 				2C21DD052ADDD0AE005AA519 /* FlightServiceTests.swift in Sources */,
-				2C9CFFD52ADEA62B000C18CF /* MockAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

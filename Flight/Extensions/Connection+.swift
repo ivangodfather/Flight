@@ -13,13 +13,13 @@ extension Array where Element == Connection {
     }
 
     var steps: [Step] {
-        var steps = [Step]()
-        for connection in self {
-            steps.append(.init(name: connection.from, coordinate: connection.coordinates.from))
+        return reduce([]) { partialResult, connection in
+            var newSteps = [connection.fromStep]
             if connection == last {
-                steps.append(.init(name: connection.to, coordinate: connection.coordinates.to))
+                newSteps.append(connection.toStep)
             }
+            return partialResult + newSteps
         }
-        return steps
     }
 }
+

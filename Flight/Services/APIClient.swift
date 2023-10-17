@@ -8,12 +8,10 @@
 import Combine
 import Foundation
 
-protocol APIClientProtocol {
-    func connections() -> AnyPublisher<[Connection], APIError>
-}
+struct APIClient {
+    var connections: () -> AnyPublisher<[Connection], APIError>
 
-struct APIClient: APIClientProtocol {
-    func connections() -> AnyPublisher<[Connection], APIError> {
+    static let live: APIClient = Self {
         let response: AnyPublisher<ConnectionResponse, APIError> = FlightEndpoint.connections.get()
         return response.map(\.connections).eraseToAnyPublisher()
     }

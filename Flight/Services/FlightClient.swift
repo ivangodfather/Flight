@@ -7,20 +7,23 @@
 
 import Foundation
 
-protocol FlightClientProtocol {
-    func findCheapestRoute(
-        from: String,
-        to: String,
-        using connections: [Connection]
+struct FlightClient {
+    var cheapestRoute: (
+        _ from: String,
+        _ to: String,
+        _ connections: [Connection]
     ) -> [Connection]
-}
 
-struct FlightClient: FlightClientProtocol {
-    func findCheapestRoute(
-        from: String,
-        to: String,
-        using connections: [Connection]
-    ) -> [Connection] {
+    static let mock = Self { _, _, _ in
+        [.init(
+            from: "Palma",
+            to: "Barcelona",
+            price: 10,
+            coordinates: .init(from: .pmi, to: .bcn)
+        )]
+    }
+
+    static let live = Self { from, to, connections in
         var cheapestRoute: [Connection] = []
 
         findRoutes(
@@ -35,7 +38,7 @@ struct FlightClient: FlightClientProtocol {
         return cheapestRoute
     }
 
-    private func findRoutes(
+    private static func findRoutes(
         from: String,
         to: String,
         currentRoute: [Connection],

@@ -12,7 +12,10 @@ struct RouteView: View {
     var body: some View {
         Section {
             ForEach(route) { connection in
-                LabeledContent("\(connection.from) \(Image(systemName: "arrow.turn.down.right")) \(connection.to)", value: connection.price.description)
+                LabeledContent(
+                    "\(connection.from) \(Image(systemName: "arrow.turn.down.right")) \(connection.to)",
+                    value: connection.price.inCurrency
+                )
             }
         } header: {
             Label("Route", systemImage: "point.topleft.down.to.point.bottomright.filled.curvepath")

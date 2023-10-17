@@ -20,17 +20,17 @@ final class FlightViewModel: ObservableObject {
     @Published var route = [Connection]()
 
 
-    private let apiClient: APIClientProtocol
+    private let apiClient: APIClient
     private var cancellables = Set<AnyCancellable>()
     @Published private var connections = [Connection]()
-    private let flightClient: FlightClientProtocol
+    private let flightClient: FlightClient
     private let fromPublisher = PassthroughSubject<String, Never>()
     private let toPublisher = PassthroughSubject<String, Never>()
 
 
     init(
-        apiClient: APIClientProtocol = APIClient(),
-        flightClient: FlightClientProtocol = FlightClient()
+        apiClient: APIClient = .live,
+        flightClient: FlightClient = .live
     ) {
         self.apiClient = apiClient
         self.flightClient = flightClient
@@ -79,11 +79,7 @@ final class FlightViewModel: ObservableObject {
     }
 
     func search() {
-        route = flightClient.findCheapestRoute(
-            from: from,
-            to: to,
-            using: connections
-        )
+        route = flightClient.cheapestRoute(from, to, connections)
     }
 
     func clearForm() {

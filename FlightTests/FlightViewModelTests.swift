@@ -27,22 +27,14 @@ private extension Connection {
 
 final class FlightViewModelTests: XCTestCase {
 
-    var mockApi: MockAPIClient {
-        var mock = MockAPIClient()
-        mock.valueToReturn = [.pmiBcn, .bcnOrly]
-        return mock
-    }
-
-    var mockFlight: MockFlightClient {
-        var mock = MockFlightClient()
-        mock.valueToReturn = [.pmiBcn]
-        return mock
-    }
-
     func testOnAppearStopsLoading() throws {
         let sut = FlightViewModel(
-            apiClient: mockApi,
-            flightClient: mockFlight
+            apiClient: .init(connections: {
+                Just([.pmiBcn, .bcnOrly])
+                .setFailureType(to: APIError.self)
+                .eraseToAnyPublisher()
+            }),
+            flightClient: .mock
         )
 
         XCTAssertTrue(sut.isLoading)
@@ -62,8 +54,12 @@ final class FlightViewModelTests: XCTestCase {
 
     func testSearchValidRoute() throws {
         let sut = FlightViewModel(
-            apiClient: mockApi,
-            flightClient: mockFlight
+            apiClient: .init(connections: {
+                Just([.pmiBcn])
+                .setFailureType(to: APIError.self)
+                .eraseToAnyPublisher()
+            }),
+            flightClient: .mock
         )
 
         sut.onAppear()
@@ -76,8 +72,12 @@ final class FlightViewModelTests: XCTestCase {
 
     func testShowFromCompletions() throws {
         let sut = FlightViewModel(
-            apiClient: mockApi,
-            flightClient: mockFlight
+            apiClient: .init(connections: {
+                Just([.pmiBcn, .bcnOrly])
+                .setFailureType(to: APIError.self)
+                .eraseToAnyPublisher()
+            }),
+            flightClient: .mock
         )
 
         sut.onAppear()
@@ -113,8 +113,12 @@ final class FlightViewModelTests: XCTestCase {
 
     func testShowToCompletions() throws {
         let sut = FlightViewModel(
-            apiClient: mockApi,
-            flightClient: mockFlight
+            apiClient: .init(connections: {
+                Just([.pmiBcn])
+                .setFailureType(to: APIError.self)
+                .eraseToAnyPublisher()
+            }),
+            flightClient: .mock
         )
 
         sut.onAppear()
@@ -139,8 +143,12 @@ final class FlightViewModelTests: XCTestCase {
      */
     func testCompletionsAreEmptyIfDestinationIsValid() throws {
         let sut = FlightViewModel(
-            apiClient: mockApi,
-            flightClient: mockFlight
+            apiClient: .init(connections: {
+                Just([.pmiBcn])
+                .setFailureType(to: APIError.self)
+                .eraseToAnyPublisher()
+            }),
+            flightClient: .mock
         )
 
         sut.onAppear()

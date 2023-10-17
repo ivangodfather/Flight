@@ -23,3 +23,13 @@ struct Step: Identifiable, Equatable {
         self.coordinate = CLLocationCoordinate2D(latitude: coordinate.lat, longitude: coordinate.long)
     }
 }
+
+extension Connection {
+    var fromStep: Step {
+        .init(name: from, coordinate: coordinates.from)
+    }
+
+    var toStep: Step {
+        .init(name: to, coordinate: coordinates.to)
+    }
+}
